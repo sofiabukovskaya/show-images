@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_app/models/image_model.dart';
+import 'package:flutter_image_app/ui/main_page/list/image_list.dart';
 import 'package:http/http.dart';
-import 'models/image_model.dart';
+
 
 class App extends StatefulWidget {
   @override
@@ -18,9 +20,8 @@ class AppState extends State<App>{
     void fetchData() async{
       counter++;
       final Uri url = Uri.parse('https://jsonplaceholder.typicode.com/photos/$counter');
-      Response response = await get(url);
-      ImageModel imageModel = ImageModel.fromJson(json.decode(response.body));
-
+      final Response response = await get(url);
+      final ImageModel imageModel = ImageModel.fromJson(json.decode(response.body));
       setState(() {
         images.add(imageModel);
       });
@@ -29,7 +30,7 @@ class AppState extends State<App>{
   Widget build(BuildContext context) {
      return MaterialApp(
         home: Scaffold(
-          body: Text('$counter'),
+          body: ImageList(images),
           appBar: AppBar(
             title: const Text('Lets see images!'),
           ),
